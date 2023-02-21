@@ -1,0 +1,398 @@
+---
+title: "How to fetch API data in R and Python"
+description: | 
+  This API tutorial will teach you how to fetch data from an external source using HTTP requests and parse the data into a usable format.
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+author:
+  - name: Ogundepo Ezekiel Adebayo
+    url: https://bit.ly/gbganalyst
+    affiliation: 54gene
+    affiliation-url: https://54gene.com
+toc: true
+toc-location: left
+number-sections: true
+highlight-style: pygments
+format: 
+  html:
+    theme: cosmo
+    page-layout: full # custom #article,
+    code-fold: false
+    code-tools: true
+    df-print: paged
+    smooth-scroll: true
+    link-external-icon: true
+    link-external-newwindow: true
+editor: visual
+execute:
+  error: true
+  eval: false
+  echo: true #fenced
+  freeze: auto
+knitr:
+  opts_chunk:
+    comment: "#>"
+    #collapse: true
+    tidy: 'styler'
+    message: false
+    warning: false
+    wrap: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## What is an API?
+
+![Image source: Unsplash](images/API.jpg){style="float:right;" fig-alt="API image" width="200"}
+
+An API (Application Programming Interface) is a set of protocols, routines, and tools used for building software applications. It is essentially a set of rules and methods that data analyst or software developers can use to interact with and access the services and features provided by another application, service or platform.
+
+In simpler terms, an API allows different software applications to communicate with each other and share data in a standardized way. With APIs, developers or analysts can get data without needing to scrape the website, manually download it, or directly go to the company from which they need it.
+
+![How API work](images/how-api-work.jpg){#fig-elephant fig-align="left" width="70%"}
+
+For example, if you want to integrate a weather forecast feature into your app, you can use a weather API that provides the necessary data, rather than building the entire feature from scratch. This allows you to focus on the unique aspects of your app, without worrying about the underlying functionality.
+
+## Type of request methods
+
+```{r}
+#| label: fig-api-method
+#| fig-cap: Types of request method
+#| fig-align: left
+#| eval: true
+#| echo: false
+
+knitr::include_graphics("images/image-849919650.png")
+
+library(reticulate)
+
+```
+
+As shown in @fig-api-method, the most common type of API request method is `GET`.
+
+## General rules for using an API
+
+To use an API to extract data, you will need to follow these steps:
+
+1.  Find an API that provides the data you are interested in. This may involve doing some research online to find available APIs.
+
+2.  Familiarize yourself with the API's documentation to understand how to make requests and what data is available.
+
+3.  Use a programming language to write a script that sends a request to the API and receives the data. Depending on the API, you may need to include authentication parameters in the request to specify the data you want to receive.
+
+4.  Parse the data you receive from the API to extract the information you are interested in. The format of the data will depend on the API you are using, and may be in JSON, XML, or another format.
+
+5.  Process the extracted data in your script, or save it to a file or database for later analysis.
+
+## How to fetch API data using a programming language
+
+### with R {#sec-api-r}
+
+There are several packages available in R for consuming APIs. Some of the most commonly used packages are:
+
+1.  **httr**: This package provides convenient functions for making HTTP requests and processing the responses.
+
+2.  **jsonlite**: This package is used for parsing JSON data, which is a common format for API responses.
+
+3.  **RCurl**: This package is a wrapper around the libcurl library, which is a powerful and versatile HTTP client library.
+
+To get data from an API in R, you need to follow these steps:
+
+1.  Install the required packages by running the following command in the R console:
+
+```{r}
+#| code-summary: "installation of packages"
+
+install.packages(c("httr", "jsonlite", "RCurl")) 
+
+```
+
+2.  Load the packages by running the following command:
+
+```{r}
+#| code-summary: "Loading of packages"
+
+library(httr) 
+
+library(jsonlite) 
+
+library(RCurl) 
+
+```
+
+3.  Make an API request by using the GET function from the httr package. The API endpoint should be passed as an argument to this function.
+
+```{r}
+
+response <- GET("https://api.example.com/endpoint") 
+
+```
+
+4.  Check the status code of the response to see if the request was successful. A status code of `200` indicates a successful request.
+
+```{r}
+#| code-summary: "Request status"
+#| 
+status_code <- status_code(response) 
+
+```
+
+5.  Extract the data from the response. If the API returns data in JSON format, you can use the `fromJSON` function from the `jsonlite` package to parse the data. Store the data in a variable for later use.
+
+```{r}
+#| code-summary: "Resulting dataframe"
+
+api_data <- fromJSON(content(response, as = "text")) 
+```
+
+These are the basic steps to get data from an API in R. Depending on the API, you may need to pass additional parameters or authentication information in your request. For example,
+
+```{r}
+#| code-summary: "API with access key"
+
+response <- GET("https://api.example.com/endpoint",
+            authenticate(
+                          user = "API_KEY_HERE",
+                          password = "API_PASSWORD_HERE",
+                          type = "basic")) 
+
+```
+
+### with Python {#sec-api-py}
+
+To use an API in Python, you can use a library such as `requests` or `urllib` to send HTTP requests to the API and receive responses. Here's an example of how to use an API in Python using the requests library:
+
+```{python}
+
+import requests
+
+# Define the API endpoint URL and parameters
+endpoint = 'https://api.example.com/data'
+
+params = {'param1': 'value1', 'param2': 'value2'}
+
+# Send a GET request to the API endpoint
+response = requests.get(endpoint, params = params)
+
+# Check if the request was successful
+if response.status_code == 200:
+    # Parse the response JSON data
+    data = response.json()
+
+    # Process the data, for example by printing it to the console
+    print(data)
+else:
+    print(f'Error: {response.status_code}')
+```
+
+In this example, we're using the `requests` library to send a GET request to an API endpoint at `https://api.example.com/data`, passing two parameters (`param1` and `param2`) in the request. The `requests.get()` method returns a `Response` object, which we can use to check the response status code and parse the response data.
+
+If the status code is `200`, we can assume the request was successful, and we can parse the response data using the `response.json()` method, which converts the JSON-formatted response to a Python object. We can then process the data as needed, for example by printing it to the console.
+
+Of course, the exact API endpoint and parameters will depend on the specific API that you are using, and you'll need to consult the API documentation to learn how to construct your request correctly. But this example should give you a sense of the general process involved in using an API in Python.
+
+## Practical example in R and Python
+
+We will use R and Python to fetch the API data without and with the key.
+
+### Without the key
+
+In this example, we will use an API from a site called [![](images/give_food.png){height="30"}](https://www.givefood.org.uk/api/2/docs/) that uses an API without an API key. In this case, we will be using a `GET` request to fetch the API data at the **food banks** using this link: <https://www.givefood.org.uk/api/2/foodbanks>. Please follow the steps in @sec-api-r for R and @sec-api-py for Python.
+
+::: {.panel-tabset group="language"}
+## R
+
+```{r}
+#| eval: true
+#| 
+
+library(httr)
+
+library(jsonlite)
+
+library(dplyr)
+
+response <- GET("https://www.givefood.org.uk/api/2/foodbanks")
+
+status_code(response)
+
+food_dataframe <- fromJSON(content(response, as = "text"), flatten = TRUE)
+
+food_dataframe %>% 
+  dim()
+
+food_dataframe %>% 
+  head()
+```
+
+## Python
+
+```{python}
+#| eval: true
+
+import requests
+
+import pandas as pd
+
+response = requests.get("https://www.givefood.org.uk/api/2/foodbanks")
+
+# Check if the request was successful
+
+print(response.status_code)
+
+# Parse the response JSON data
+
+food_json = response.json()
+
+# Convert to a pandas dataframe
+
+food_dataframe = pd.json_normalize(food_json)
+
+food_dataframe.shape
+
+food_dataframe.head()
+```
+
+In this example, we use the `pd.json_normalize()` method to flatten the list of dictionaries and create a dataframe from it. The resulting dataframe has columns for each key in the JSON objects.
+:::
+
+### With the key
+
+In this example, we will use an API from [![](images/image-874061681.png){width="156" height="30"}](https://www.reed.co.uk/developers/Jobseeker) that uses an API key. In this case, we will use a `GET` request to fetch data for analyst jobs based in London from the [Jobseeker](https://www.reed.co.uk/api/1.0/search?keywords=analyst&location=london&distancefromlocation=15) API. Please follow the steps in @sec-api-r for R and @sec-api-py for Python, and sign up for the API key at the Jobseeker [website](https://www.reed.co.uk/developers/Jobseeker).
+
+::: {.panel-tabset group="language"}
+## R
+
+```{r}
+#| include: false
+#| eval: true
+#| 
+dotenv::load_dot_env()
+
+# In the .env file, make sure you add a blank line by pressing a return key to avoid incomplete final line found on '.env' warning 
+```
+
+```{r}
+#| eval: true
+#| 
+
+library(httr)
+
+library(jsonlite)
+
+library(dplyr)
+
+# Create a GET response to call the API
+
+response <- GET("https://www.reed.co.uk/api/1.0/search?keywords=analyst&location=london&distancefromlocation=15",
+authenticate(user = Sys.getenv("putyourapikeyhere"),
+password = "")) 
+```
+
+Replace `Sys.getenv("putyourapikeyhere")` with your own API key.
+
+```{r}
+#| eval: true
+
+status_code(response)
+
+# Convert the JSON string to a dataframe and view data in a table
+
+job_dataframe <- fromJSON(content(response, as = "text"), flatten = TRUE)
+
+# The job dataframe is inside the results
+
+job_dataframe$results %>% 
+  dim()
+
+job_dataframe$results %>% 
+  head()
+```
+
+## Python
+
+```{python}
+#| eval: true
+#| include: false
+
+import requests
+
+import pandas as pd
+
+# Set API endpoint and API key
+
+url = "https://www.reed.co.uk/api/1.0/search?keywords=analyst&location=london&distancefromlocation=15"
+
+api_key = "f858a25b-1f71-4c1c-afea-ad088eb241e0" # Replace with your own API key
+
+# Send a GET request to the API endpoint
+
+response = requests.get(url, auth = (api_key, ''))
+
+# Check if the request was successful
+
+print(response.status_code)
+
+# Parse the response JSON data
+
+job_json = response.json()
+
+# Convert to a pandas dataframe
+
+# The dataframe is inside the results
+
+job_dataframe = pd.json_normalize(job_json["results"])
+
+job_dataframe.shape
+
+job_dataframe.head()
+```
+
+```{python}
+
+import requests
+
+import pandas as pd
+
+# Set API endpoint and API key
+
+url = "https://www.reed.co.uk/api/1.0/search?keywords=analyst&location=london&distancefromlocation=15"
+
+api_key = "replace with your own API key" 
+
+# Send a GET request to the API endpoint
+
+response = requests.get(url, auth=(api_key, ''))
+```
+
+```{python}
+#| eval: true
+
+# Check if the request was successful
+
+print(response.status_code)
+
+# Parse the response JSON data
+
+job_json = response.json()
+
+# Convert to a pandas dataframe
+
+# The dataframe is inside the results
+
+job_dataframe = pd.json_normalize(job_json["results"])
+
+job_dataframe.shape
+
+job_dataframe.head()
+```
+:::
+
+You can now use the data for your data science.
+
+------------------------------------------------------------------------
+
+I hope you enjoy this article. You can find its GitHub repository [here](https://github.com/gbganalyst/API-in-R-and-Python), and if you like this write-up, you can also follow me on [Twitter](https://twitter.com/gbganalyst) and [Linkedin](https://linkedin.com/in/ezekiel-ogundepo) for more updates on `R`, `Python`, and `Excel` for data science.
+
+------------------------------------------------------------------------
+
+This article is fully sponsored by [Olubukunola Oyedele](https://www.linkedin.com/in/olubukunola-oyedele/), Director of Systems, Epidemiology, and Education, 54gene.

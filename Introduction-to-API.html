@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ogundepo Ezekiel Adebayo">
+<meta name="dcterms.date" content="2023-02-21">
+<meta name="description" content="This API tutorial will teach you how to fetch data from an external source using HTTP requests and parse the data into a usable format.">
+
+<title>How to fetch API data in R and Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="Introduction-to-API_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Introduction-to-API_files/libs/quarto-html/quarto.js"></script>
+<script src="Introduction-to-API_files/libs/quarto-html/popper.min.js"></script>
+<script src="Introduction-to-API_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Introduction-to-API_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Introduction-to-API_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Introduction-to-API_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Introduction-to-API_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Introduction-to-API_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Introduction-to-API_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+<link href="Introduction-to-API_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="Introduction-to-API_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-full toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#what-is-an-api" id="toc-what-is-an-api" class="nav-link active" data-scroll-target="#what-is-an-api"><span class="toc-section-number">1</span>  What is an API?</a></li>
+  <li><a href="#type-of-request-methods" id="toc-type-of-request-methods" class="nav-link" data-scroll-target="#type-of-request-methods"><span class="toc-section-number">2</span>  Type of request methods</a></li>
+  <li><a href="#general-rules-for-using-an-api" id="toc-general-rules-for-using-an-api" class="nav-link" data-scroll-target="#general-rules-for-using-an-api"><span class="toc-section-number">3</span>  General rules for using an API</a></li>
+  <li><a href="#how-to-fetch-api-data-using-a-programming-language" id="toc-how-to-fetch-api-data-using-a-programming-language" class="nav-link" data-scroll-target="#how-to-fetch-api-data-using-a-programming-language"><span class="toc-section-number">4</span>  How to fetch API data using a programming language</a>
+  <ul class="collapse">
+  <li><a href="#sec-api-r" id="toc-sec-api-r" class="nav-link" data-scroll-target="#sec-api-r"><span class="toc-section-number">4.1</span>  with R</a></li>
+  <li><a href="#sec-api-py" id="toc-sec-api-py" class="nav-link" data-scroll-target="#sec-api-py"><span class="toc-section-number">4.2</span>  with Python</a></li>
+  </ul></li>
+  <li><a href="#practical-example-in-r-and-python" id="toc-practical-example-in-r-and-python" class="nav-link" data-scroll-target="#practical-example-in-r-and-python"><span class="toc-section-number">5</span>  Practical example in R and Python</a>
+  <ul class="collapse">
+  <li><a href="#without-the-key" id="toc-without-the-key" class="nav-link" data-scroll-target="#without-the-key"><span class="toc-section-number">5.1</span>  Without the key</a></li>
+  <li><a href="#with-the-key" id="toc-with-the-key" class="nav-link" data-scroll-target="#with-the-key"><span class="toc-section-number">5.2</span>  With the key</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content column-page-right" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">How to fetch API data in R and Python</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+<div>
+  <div class="description">
+    <p>This API tutorial will teach you how to fetch data from an external source using HTTP requests and parse the data into a usable format.</p>
+  </div>
+</div>
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <a href="https://bit.ly/gbganalyst">Ogundepo Ezekiel Adebayo</a> 
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="https://54gene.com">
+            54gene
+            </a>
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 21, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="what-is-an-api" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="what-is-an-api"><span class="header-section-number">1</span> What is an API?</h2>
+<div class="quarto-figure quarto-figure-center" style="float:right;">
+<figure class="figure">
+<p><img src="images/API.jpg" class="img-fluid figure-img" alt="API image" width="200"></p>
+<p></p><figcaption class="figure-caption">Image source: Unsplash</figcaption><p></p>
+</figure>
+</div>
+<p>An API (Application Programming Interface) is a set of protocols, routines, and tools used for building software applications. It is essentially a set of rules and methods that data analyst or software developers can use to interact with and access the services and features provided by another application, service or platform.</p>
+<p>In simpler terms, an API allows different software applications to communicate with each other and share data in a standardized way. With APIs, developers or analysts can get data without needing to scrape the website, manually download it, or directly go to the company from which they need it.</p>
+<div id="fig-elephant" class="quarto-figure quarto-figure-left anchored">
+<figure class="figure">
+<p><img src="images/how-api-work.jpg" class="img-fluid figure-img" style="width:70.0%"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: How API work</figcaption><p></p>
+</figure>
+</div>
+<p>For example, if you want to integrate a weather forecast feature into your app, you can use a weather API that provides the necessary data, rather than building the entire feature from scratch. This allows you to focus on the unique aspects of your app, without worrying about the underlying functionality.</p>
+</section>
+<section id="type-of-request-methods" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="type-of-request-methods"><span class="header-section-number">2</span> Type of request methods</h2>
+<div class="cell" data-layout-align="left">
+<div class="cell-output-display">
+<div id="fig-api-method" class="quarto-figure quarto-figure-left anchored">
+<figure class="figure">
+<p><img src="images/image-849919650.png" class="img-fluid figure-img" width="488"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: Types of request method</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As shown in <a href="#fig-api-method">Figure&nbsp;2</a>, the most common type of API request method is <code>GET</code>.</p>
+</section>
+<section id="general-rules-for-using-an-api" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="general-rules-for-using-an-api"><span class="header-section-number">3</span> General rules for using an API</h2>
+<p>To use an API to extract data, you will need to follow these steps:</p>
+<ol type="1">
+<li><p>Find an API that provides the data you are interested in. This may involve doing some research online to find available APIs.</p></li>
+<li><p>Familiarize yourself with the API’s documentation to understand how to make requests and what data is available.</p></li>
+<li><p>Use a programming language to write a script that sends a request to the API and receives the data. Depending on the API, you may need to include authentication parameters in the request to specify the data you want to receive.</p></li>
+<li><p>Parse the data you receive from the API to extract the information you are interested in. The format of the data will depend on the API you are using, and may be in JSON, XML, or another format.</p></li>
+<li><p>Process the extracted data in your script, or save it to a file or database for later analysis.</p></li>
+</ol>
+</section>
+<section id="how-to-fetch-api-data-using-a-programming-language" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="how-to-fetch-api-data-using-a-programming-language"><span class="header-section-number">4</span> How to fetch API data using a programming language</h2>
+<section id="sec-api-r" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="sec-api-r"><span class="header-section-number">4.1</span> with R</h3>
+<p>There are several packages available in R for consuming APIs. Some of the most commonly used packages are:</p>
+<ol type="1">
+<li><p><strong>httr</strong>: This package provides convenient functions for making HTTP requests and processing the responses.</p></li>
+<li><p><strong>jsonlite</strong>: This package is used for parsing JSON data, which is a common format for API responses.</p></li>
+<li><p><strong>RCurl</strong>: This package is a wrapper around the libcurl library, which is a powerful and versatile HTTP client library.</p></li>
+</ol>
+<p>To get data from an API in R, you need to follow these steps:</p>
+<ol type="1">
+<li>Install the required packages by running the following command in the R console:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"httr"</span>, <span class="st">"jsonlite"</span>, <span class="st">"RCurl"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Load the packages by running the following command:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RCurl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>Make an API request by using the GET function from the httr package. The API endpoint should be passed as an argument to this function.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="st">"https://api.example.com/endpoint"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="4" type="1">
+<li>Check the status code of the response to see if the request was successful. A status code of <code>200</code> indicates a successful request.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>status_code <span class="ot">&lt;-</span> <span class="fu">status_code</span>(response)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="5" type="1">
+<li>Extract the data from the response. If the API returns data in JSON format, you can use the <code>fromJSON</code> function from the <code>jsonlite</code> package to parse the data. Store the data in a variable for later use.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>api_data <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="fu">content</span>(response, <span class="at">as =</span> <span class="st">"text"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>These are the basic steps to get data from an API in R. Depending on the API, you may need to pass additional parameters or authentication information in your request. For example,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">GET</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://api.example.com/endpoint"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">authenticate</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">user =</span> <span class="st">"API_KEY_HERE"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">password =</span> <span class="st">"API_PASSWORD_HERE"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">type =</span> <span class="st">"basic"</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sec-api-py" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="sec-api-py"><span class="header-section-number">4.2</span> with Python</h3>
+<p>To use an API in Python, you can use a library such as <code>requests</code> or <code>urllib</code> to send HTTP requests to the API and receive responses. Here’s an example of how to use an API in Python using the requests library:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the API endpoint URL and parameters</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>endpoint <span class="op">=</span> <span class="st">'https://api.example.com/data'</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {<span class="st">'param1'</span>: <span class="st">'value1'</span>, <span class="st">'param2'</span>: <span class="st">'value2'</span>}</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Send a GET request to the API endpoint</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(endpoint, params <span class="op">=</span> params)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the request was successful</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parse the response JSON data</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> response.json()</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Process the data, for example by printing it to the console</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(data)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Error: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this example, we’re using the <code>requests</code> library to send a GET request to an API endpoint at <code>https://api.example.com/data</code>, passing two parameters (<code>param1</code> and <code>param2</code>) in the request. The <code>requests.get()</code> method returns a <code>Response</code> object, which we can use to check the response status code and parse the response data.</p>
+<p>If the status code is <code>200</code>, we can assume the request was successful, and we can parse the response data using the <code>response.json()</code> method, which converts the JSON-formatted response to a Python object. We can then process the data as needed, for example by printing it to the console.</p>
+<p>Of course, the exact API endpoint and parameters will depend on the specific API that you are using, and you’ll need to consult the API documentation to learn how to construct your request correctly. But this example should give you a sense of the general process involved in using an API in Python.</p>
+</section>
+</section>
+<section id="practical-example-in-r-and-python" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="practical-example-in-r-and-python"><span class="header-section-number">5</span> Practical example in R and Python</h2>
+<p>We will use R and Python to fetch the API data without and with the key.</p>
+<section id="without-the-key" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="without-the-key"><span class="header-section-number">5.1</span> Without the key</h3>
+<p>In this example, we will use an API from a site called <a href="https://www.givefood.org.uk/api/2/docs/"><img src="images/give_food.png" height="30"></a> that uses an API without an API key. In this case, we will be using a <code>GET</code> request to fetch the API data at the <strong>food banks</strong> using this link: <a href="https://www.givefood.org.uk/api/2/foodbanks" class="uri">https://www.givefood.org.uk/api/2/foodbanks</a>. Please follow the steps in <a href="#sec-api-r">Section&nbsp;4.1</a> for R and <a href="#sec-api-py">Section&nbsp;4.2</a> for Python.</p>
+<div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Python</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="st">"https://www.givefood.org.uk/api/2/foodbanks"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">status_code</span>(response)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 200</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>food_dataframe <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="fu">content</span>(response, <span class="at">as =</span> <span class="st">"text"</span>), <span class="at">flatten =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>food_dataframe <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 802  27</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>food_dataframe <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["alt_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["slug"],"name":[3],"type":["chr"],"align":["left"]},{"label":["phone"],"name":[4],"type":["chr"],"align":["left"]},{"label":["secondary_phone"],"name":[5],"type":["chr"],"align":["left"]},{"label":["email"],"name":[6],"type":["chr"],"align":["left"]},{"label":["address"],"name":[7],"type":["chr"],"align":["left"]},{"label":["postcode"],"name":[8],"type":["chr"],"align":["left"]},{"label":["closed"],"name":[9],"type":["lgl"],"align":["right"]},{"label":["country"],"name":[10],"type":["chr"],"align":["left"]},{"label":["lat_lng"],"name":[11],"type":["chr"],"align":["left"]},{"label":["network"],"name":[12],"type":["chr"],"align":["left"]},{"label":["created"],"name":[13],"type":["chr"],"align":["left"]},{"label":["urls.self"],"name":[14],"type":["chr"],"align":["left"]},{"label":["urls.html"],"name":[15],"type":["chr"],"align":["left"]},{"label":["urls.homepage"],"name":[16],"type":["chr"],"align":["left"]},{"label":["urls.shopping_list"],"name":[17],"type":["chr"],"align":["left"]},{"label":["charity.registration_id"],"name":[18],"type":["chr"],"align":["left"]},{"label":["charity.register_url"],"name":[19],"type":["chr"],"align":["left"]},{"label":["politics.parliamentary_constituency"],"name":[20],"type":["chr"],"align":["left"]},{"label":["politics.mp"],"name":[21],"type":["chr"],"align":["left"]},{"label":["politics.mp_party"],"name":[22],"type":["chr"],"align":["left"]},{"label":["politics.mp_parl_id"],"name":[23],"type":["int"],"align":["right"]},{"label":["politics.ward"],"name":[24],"type":["chr"],"align":["left"]},{"label":["politics.district"],"name":[25],"type":["chr"],"align":["left"]},{"label":["politics.urls.self"],"name":[26],"type":["chr"],"align":["left"]},{"label":["politics.urls.html"],"name":[27],"type":["chr"],"align":["left"]}],"data":[{"1":"Breadline Project","2":"NA","3":"breadline-project","4":"07411602448","5":"NA","6":"breadline@outlook.com","7":"4 Cherry Road\\r\\nBanbury\\r\\nOX16 0RL","8":"OX16 0RL","9":"FALSE","10":"England","11":"52.0661129,-1.3586409","12":"Independent","13":"2022-04-07T19:19:18.022","14":"https://www.givefood.org.uk/api/2/foodbank/breadline-project/","15":"https://www.givefood.org.uk/needs/at/breadline-project/","16":"http://breadlineproject.org","17":"http://breadlineproject.org/Get-Involved/","18":"NA","19":"NA","20":"Banbury","21":"Victoria Prentis","22":"Conservative","23":"4401","24":"Banbury Ruscote","25":"Cherwell","26":"https://www.givefood.org.uk/api/2/constituency/banbury/","27":"https://www.givefood.org.uk/needs/in/constituency/banbury/","_rn_":"1"},{"1":"Durness & Kinlochbervie","2":"NA","3":"durness-kinlochbervie","4":"01971521287","5":"NA","6":"glad.mac@btinternet.com","7":"Church of Scotland Manse\\r\\nManse Road\\r\\nKinlochbervie\\r\\nSutherland\\r\\nIV27 4RG","8":"IV27 4RG","9":"FALSE","10":"Scotland","11":"58.46095649999999,-5.0349578","12":"Independent","13":"2023-01-31T17:21:04.764","14":"https://www.givefood.org.uk/api/2/foodbank/durness-kinlochbervie/","15":"https://www.givefood.org.uk/needs/at/durness-kinlochbervie/","16":"https://dkparish.wordpress.com/kinlochbervie-church-of-scotland/","17":"https://dkparish.wordpress.com/kinlochbervie-church-of-scotland/","18":"SC005079","19":"https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=SC005079","20":"Caithness, Sutherland and Easter Ross","21":"Jamie Stone","22":"Liberal Democrats","23":"4612","24":"North, West and Central Sutherland","25":"Highland","26":"https://www.givefood.org.uk/api/2/constituency/caithness-sutherland-and-easter-ross/","27":"https://www.givefood.org.uk/needs/in/constituency/caithness-sutherland-and-easter-ross/","_rn_":"2"},{"1":"Belton Pantry","2":"NA","3":"belton-pantry","4":"01493780210","5":"NA","6":"info@allsaintsbelton.church","7":"All Saints Belton\\r\\nChurch Lane\\r\\nBelton\\r\\nNorfolk\\r\\nNR31 9LD","8":"NR31 9LD","9":"FALSE","10":"England","11":"52.5675439,1.6662356","12":"Independent","13":"2023-01-10T13:36:48.117","14":"https://www.givefood.org.uk/api/2/foodbank/belton-pantry/","15":"https://www.givefood.org.uk/needs/at/belton-pantry/","16":"https://allsaintsbelton.church/pantry/","17":"https://allsaintsbelton.church/pantry/","18":"NA","19":"NA","20":"Great Yarmouth","21":"Brandon Lewis","22":"Conservative","23":"4009","24":"Lothingland","25":"Great Yarmouth","26":"https://www.givefood.org.uk/api/2/constituency/great-yarmouth/","27":"https://www.givefood.org.uk/needs/in/constituency/great-yarmouth/","_rn_":"3"},{"1":"Omagh Community Church","2":"NA","3":"omagh-community-church","4":"07784870375","5":"NA","6":"office@omaghcommunitychurch.com","7":"54A High Street\\r\\nOmagh\\r\\nBT78 1BA","8":"BT78 1BA","9":"FALSE","10":"Northern Ireland","11":"54.6002235,-7.3009817","12":"Independent","13":"2022-07-03T09:00:47.675","14":"https://www.givefood.org.uk/api/2/foodbank/omagh-community-church/","15":"https://www.givefood.org.uk/needs/at/omagh-community-church/","16":"https://www.omaghcommunitychurch.com/foodbank","17":"https://www.omaghcommunitychurch.com/give-food","18":"NA","19":"NA","20":"West Tyrone","21":"Órfhlaith Begley","22":"Sinn Féin","23":"4697","24":"Dergmoney","25":"Fermanagh and Omagh","26":"https://www.givefood.org.uk/api/2/constituency/west-tyrone/","27":"https://www.givefood.org.uk/needs/in/constituency/west-tyrone/","_rn_":"4"},{"1":"The Well (Gorleston)","2":"NA","3":"the-well-gorleston","4":"07786952306","5":"NA","6":"secretary@gorlestonbaptist.org.uk","7":"14 Lowestoft Road\\r\\nGorleston-on-Sea\\r\\nGreat Yarmouth\\r\\nNR31 6LY","8":"NR31 6LY","9":"FALSE","10":"England","11":"52.57730979999999,1.7264254","12":"Independent","13":"2022-12-30T09:16:26.129","14":"https://www.givefood.org.uk/api/2/foodbank/the-well-gorleston/","15":"https://www.givefood.org.uk/needs/at/the-well-gorleston/","16":"https://www.gorlestonbaptist.org.uk/the-well","17":"https://www.gorlestonbaptist.org.uk/the-well/w","18":"NA","19":"NA","20":"Great Yarmouth","21":"Brandon Lewis","22":"Conservative","23":"4009","24":"St. Andrews","25":"Great Yarmouth","26":"https://www.givefood.org.uk/api/2/constituency/great-yarmouth/","27":"https://www.givefood.org.uk/needs/in/constituency/great-yarmouth/","_rn_":"5"},{"1":"Caister Community Larder","2":"NA","3":"caister-community-larder","4":"01493378300","5":"NA","6":"larder@caisterprimaryfederation.org","7":"Kingston Avenue\\r\\nCaister-on-Sea\\r\\nGreat Yarmouth\\r\\nEngland\\r\\nNR30 5ET","8":"NR30 5ET","9":"FALSE","10":"England","11":"52.6489495,1.7287352","12":"Independent","13":"2022-12-30T09:21:36.810","14":"https://www.givefood.org.uk/api/2/foodbank/caister-community-larder/","15":"https://www.givefood.org.uk/needs/at/caister-community-larder/","16":"https://caisterprimaryfederation.org/larder/","17":"https://caisterprimaryfederation.org/larder/","18":"NA","19":"NA","20":"Great Yarmouth","21":"Brandon Lewis","22":"Conservative","23":"4009","24":"Caister South","25":"Great Yarmouth","26":"https://www.givefood.org.uk/api/2/constituency/great-yarmouth/","27":"https://www.givefood.org.uk/needs/in/constituency/great-yarmouth/","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(<span class="st">"https://www.givefood.org.uk/api/2/foodbanks"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the request was successful</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(response.status_code)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse the response JSON data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 200</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>food_json <span class="op">=</span> response.json()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to a pandas dataframe</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>food_dataframe <span class="op">=</span> pd.json_normalize(food_json)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>food_dataframe.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; (802, 27)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>food_dataframe.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;                       name  ...                                 politics.urls.html
+#&gt; 0        Breadline Project  ...  https://www.givefood.org.uk/needs/in/constitue...
+#&gt; 1  Durness &amp; Kinlochbervie  ...  https://www.givefood.org.uk/needs/in/constitue...
+#&gt; 2            Belton Pantry  ...  https://www.givefood.org.uk/needs/in/constitue...
+#&gt; 3   Omagh Community Church  ...  https://www.givefood.org.uk/needs/in/constitue...
+#&gt; 4     The Well (Gorleston)  ...  https://www.givefood.org.uk/needs/in/constitue...
+#&gt; 
+#&gt; [5 rows x 27 columns]</code></pre>
+</div>
+</div>
+<p>In this example, we use the <code>pd.json_normalize()</code> method to flatten the list of dictionaries and create a dataframe from it. The resulting dataframe has columns for each key in the JSON objects.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="with-the-key" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="with-the-key"><span class="header-section-number">5.2</span> With the key</h3>
+<p>In this example, we will use an API from <a href="https://www.reed.co.uk/developers/Jobseeker"><img src="images/image-874061681.png" width="156" height="30"></a> that uses an API key. In this case, we will use a <code>GET</code> request to fetch data for analyst jobs based in London from the <a href="https://www.reed.co.uk/api/1.0/search?keywords=analyst&amp;location=london&amp;distancefromlocation=15">Jobseeker</a> API. Please follow the steps in <a href="#sec-api-r">Section&nbsp;4.1</a> for R and <a href="#sec-api-py">Section&nbsp;4.2</a> for Python, and sign up for the API key at the Jobseeker <a href="https://www.reed.co.uk/developers/Jobseeker">website</a>.</p>
+<div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Python</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a GET response to call the API</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">GET</span>(</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://www.reed.co.uk/api/1.0/search?keywords=analyst&amp;location=london&amp;distancefromlocation=15"</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">authenticate</span>(</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">user =</span> <span class="fu">Sys.getenv</span>(<span class="st">"putyourapikeyhere"</span>),</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">password =</span> <span class="st">""</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Replace <code>Sys.getenv("putyourapikeyhere")</code> with your own API key.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">status_code</span>(response)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 200</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the JSON string to a dataframe and view data in a table</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>job_dataframe <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="fu">content</span>(response, <span class="at">as =</span> <span class="st">"text"</span>), <span class="at">flatten =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The job dataframe is inside the results</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>job_dataframe<span class="sc">$</span>results <span class="sc">%&gt;%</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 100  15</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>job_dataframe<span class="sc">$</span>results <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["jobId"],"name":[1],"type":["int"],"align":["right"]},{"label":["employerId"],"name":[2],"type":["int"],"align":["right"]},{"label":["employerName"],"name":[3],"type":["chr"],"align":["left"]},{"label":["employerProfileId"],"name":[4],"type":["lgl"],"align":["right"]},{"label":["employerProfileName"],"name":[5],"type":["lgl"],"align":["right"]},{"label":["jobTitle"],"name":[6],"type":["chr"],"align":["left"]},{"label":["locationName"],"name":[7],"type":["chr"],"align":["left"]},{"label":["minimumSalary"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["maximumSalary"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["currency"],"name":[10],"type":["chr"],"align":["left"]},{"label":["expirationDate"],"name":[11],"type":["chr"],"align":["left"]},{"label":["date"],"name":[12],"type":["chr"],"align":["left"]},{"label":["jobDescription"],"name":[13],"type":["chr"],"align":["left"]},{"label":["applications"],"name":[14],"type":["int"],"align":["right"]},{"label":["jobUrl"],"name":[15],"type":["chr"],"align":["left"]}],"data":[{"1":"49753801","2":"451880","3":"Corriculo Ltd","4":"NA","5":"NA","6":"Data Protection Analyst / Data Protection Consultant, data protection, information rights law, Leeds","7":"York","8":"28000","9":"50000","10":"GBP","11":"23/03/2023","12":"09/02/2023","13":"Data Protection Analyst / Data Protection Consultant, data protection, information rights law, Leeds, COR4950 As a Data Protection Analyst or Data Protection Consultant, would you be keen to work for a thriving Information Security Consultancy, where you will have the opportunity to provide a variety of professional information security services to a wide variety  of clients across the UK and beyond? The Role A Data Prot...","14":"3","15":"https://www.reed.co.uk/jobs/data-protection-analyst-data-protection-consultant-data-protection-information-rights-law-leeds/49753801","_rn_":"1"},{"1":"49820903","2":"391312","3":"High Finance (UK) Limited T/A HFG","4":"NA","5":"NA","6":"Senior Actuarial Analyst","7":"London","8":"70000","9":"90000","10":"GBP","11":"31/03/2023","12":"17/02/2023","13":"We have partnered with a leading Lloyd's syndicate to find them a Senior Reserving Analyst to join their rapidly growing reserving team. This role includes but is not limited to the following duties:  Oversee and collaborate on group-wide reserving projects.Reserve and underwriting risk parameter analysis to aid in the quantification of key inputs to the internal capital model.Work with the Chief Actuary, Head o...","14":"0","15":"https://www.reed.co.uk/jobs/senior-actuarial-analyst/49820903","_rn_":"2"},{"1":"49820897","2":"621204","3":"Homes England","4":"NA","5":"NA","6":"Transaction Services Analyst","7":"Newcastle Upon Tyne","8":"29974","9":"35263","10":"GBP","11":"03/03/2023","12":"17/02/2023","13":"Transaction Services Analyst Closing Date - 03/03/2023 Interviews week commencing 06/03/2023 and 13/03/2023 A bit about the role... With an average annual budget of &#163;6bn, there is a need to ensure that public monies allocated to Homes England are managed timely, accurately and in line with programme parameters. This role sits within the Transaction Services Team within Financ...","14":"1","15":"https://www.reed.co.uk/jobs/transaction-services-analyst/49820897","_rn_":"3"},{"1":"49175461","2":"422355","3":"McCormick","4":"NA","5":"NA","6":"COPACKING ANALYST","7":"Haddenham","8":"NA","9":"NA","10":"NA","11":"27/03/2023","12":"08/12/2022","13":"Position: COPACKING ANALYST Based: Haddenham, UK Contract: Fixed-Term contract for 12 months MAIN RESPONSIBILITIES  Prepare and manage the plans and supply finished goods from approved suppliers (SAP/APO MRP functionality) in line with the forecast.Provide finished goods forecast to suppliers on a monthly basis, highlighting shortfal...","14":"3","15":"https://www.reed.co.uk/jobs/copacking-analyst/49175461","_rn_":"4"},{"1":"49779097","2":"433745","3":"Macfarlane Packaging","4":"NA","5":"NA","6":"Help Desk Analyst","7":"Heywood Distribution Park","8":"24000","9":"25000","10":"GBP","11":"27/03/2023","12":"13/02/2023","13":"Help Desk Analyst (IT 1st &amp; 2nd line support) Location: Heywood Distribution Park Package: Basic Salary up to &#163;25,000 (dependent on experience) &#43; Bonus &amp; Flexible Benefits Package Hours: 37.5 per week (Monday to Friday only) Sector: Packaging distributionThe Company We, the UK’s largest packaging distributor have an exciting opportunity for an ex...","14":"9","15":"https://www.reed.co.uk/jobs/help-desk-analyst/49779097","_rn_":"5"},{"1":"49779091","2":"300264","3":"Client Server Ltd.","4":"NA","5":"NA","6":"Agile Business Analyst - Asset Management","7":"Covent Garden","8":"45000","9":"60000","10":"GBP","11":"13/03/2023","12":"13/02/2023","13":"Agile Business Analyst (Asset Management) *Hybrid WfH / London* to &#163;60k Are you a talented Agile Business Analyst seeking your next challenge? Would you like to be part of a successful investment consultancy firm, working alongside a close-knit and friendly team? Benefits:  Up to &#163;60k plus a bonusHybrid working (2 days a week remote)Excellent career progr...","14":"26","15":"https://www.reed.co.uk/jobs/agile-business-analyst-asset-management/49779091","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set API endpoint and API key</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://www.reed.co.uk/api/1.0/search?keywords=analyst&amp;location=london&amp;distancefromlocation=15"</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> <span class="st">"replace with your own API key"</span> </span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Send a GET request to the API endpoint</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(url, auth<span class="op">=</span>(api_key, <span class="st">''</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the request was successful</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(response.status_code)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse the response JSON data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 200</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>job_json <span class="op">=</span> response.json()</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to a pandas dataframe</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The dataframe is inside the results</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>job_dataframe <span class="op">=</span> pd.json_normalize(job_json[<span class="st">"results"</span>])</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>job_dataframe.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; (100, 15)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>job_dataframe.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;       jobId  ...                                             jobUrl
+#&gt; 0  49753801  ...  https://www.reed.co.uk/jobs/data-protection-an...
+#&gt; 1  49820903  ...  https://www.reed.co.uk/jobs/senior-actuarial-a...
+#&gt; 2  49820897  ...  https://www.reed.co.uk/jobs/transaction-servic...
+#&gt; 3  49175461  ...  https://www.reed.co.uk/jobs/copacking-analyst/...
+#&gt; 4  49779097  ...  https://www.reed.co.uk/jobs/help-desk-analyst/...
+#&gt; 
+#&gt; [5 rows x 15 columns]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>You can now use the data for your data science.</p>
+<hr>
+<p>I hope you enjoy this article. You can find its GitHub repository <a href="https://github.com/gbganalyst/API-in-R-and-Python">here</a>, and if you like this write-up, you can also follow me on <a href="https://twitter.com/gbganalyst">Twitter</a> and <a href="https://linkedin.com/in/ezekiel-ogundepo">Linkedin</a> for more updates on <code>R</code>, <code>Python</code>, and <code>Excel</code> for data science.</p>
+<hr>
+<p>This article is fully sponsored by <a href="https://www.linkedin.com/in/olubukunola-oyedele/">Olubukunola Oyedele</a>, Director of Systems, Epidemiology, and Education, 54gene.</p>
+<!-- -->
+
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          // default icon
+          link.classList.add("external");
+      }
+    }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb32" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "How to fetch API data in R and Python"</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> | </span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">  This API tutorial will teach you how to fetch data from an external source using HTTP requests and parse the data into a usable format.</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "`r format(Sys.time(), '%B %d, %Y')`"</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Ogundepo Ezekiel Adebayo</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co">    url: https://bit.ly/gbganalyst</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co">    affiliation: 54gene</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co">    affiliation-url: https://54gene.com</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="an">toc-location:</span><span class="co"> left</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="an">number-sections:</span><span class="co"> true</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="an">highlight-style:</span><span class="co"> pygments</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: cosmo</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co">    page-layout: full # custom #article,</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="co">    df-print: paged</span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="co">    smooth-scroll: true</span></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a><span class="co">    link-external-icon: true</span></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="co">    link-external-newwindow: true</span></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> visual</span></span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a><span class="co">  error: true</span></span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a><span class="co">  eval: false</span></span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true #fenced</span></span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a><span class="co">  freeze: auto</span></span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a><span class="an">knitr:</span></span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a><span class="co">  opts_chunk:</span></span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a><span class="co">    comment: "#&gt;"</span></span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a><span class="co">    #collapse: true</span></span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a><span class="co">    tidy: 'styler'</span></span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a><span class="co">    message: false</span></span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a><span class="co">    warning: false</span></span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a><span class="co">    wrap: true</span></span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a><span class="co">  chunk_output_type: console</span></span>
+<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## What is an API?</span></span>
+<span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a><span class="al">![Image source: Unsplash](images/API.jpg)</span>{style="float:right;" fig-alt="API image" width="200"}</span>
+<span id="cb32-46"><a href="#cb32-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-47"><a href="#cb32-47" aria-hidden="true" tabindex="-1"></a>An API (Application Programming Interface) is a set of protocols, routines, and tools used for building software applications. It is essentially a set of rules and methods that data analyst or software developers can use to interact with and access the services and features provided by another application, service or platform.</span>
+<span id="cb32-48"><a href="#cb32-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-49"><a href="#cb32-49" aria-hidden="true" tabindex="-1"></a>In simpler terms, an API allows different software applications to communicate with each other and share data in a standardized way. With APIs, developers or analysts can get data without needing to scrape the website, manually download it, or directly go to the company from which they need it.</span>
+<span id="cb32-50"><a href="#cb32-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-51"><a href="#cb32-51" aria-hidden="true" tabindex="-1"></a><span class="al">![How API work](images/how-api-work.jpg)</span>{#fig-elephant fig-align="left" width="70%"}</span>
+<span id="cb32-52"><a href="#cb32-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-53"><a href="#cb32-53" aria-hidden="true" tabindex="-1"></a>For example, if you want to integrate a weather forecast feature into your app, you can use a weather API that provides the necessary data, rather than building the entire feature from scratch. This allows you to focus on the unique aspects of your app, without worrying about the underlying functionality.</span>
+<span id="cb32-54"><a href="#cb32-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-55"><a href="#cb32-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## Type of request methods</span></span>
+<span id="cb32-56"><a href="#cb32-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-59"><a href="#cb32-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-60"><a href="#cb32-60" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-api-method</span></span>
+<span id="cb32-61"><a href="#cb32-61" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Types of request method</span></span>
+<span id="cb32-62"><a href="#cb32-62" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: left</span></span>
+<span id="cb32-63"><a href="#cb32-63" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb32-64"><a href="#cb32-64" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb32-65"><a href="#cb32-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-66"><a href="#cb32-66" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"images/image-849919650.png"</span>)</span>
+<span id="cb32-67"><a href="#cb32-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-68"><a href="#cb32-68" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb32-69"><a href="#cb32-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-70"><a href="#cb32-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-71"><a href="#cb32-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-72"><a href="#cb32-72" aria-hidden="true" tabindex="-1"></a>As shown in @fig-api-method, the most common type of API request method is <span class="in">`GET`</span>.</span>
+<span id="cb32-73"><a href="#cb32-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-74"><a href="#cb32-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## General rules for using an API</span></span>
+<span id="cb32-75"><a href="#cb32-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-76"><a href="#cb32-76" aria-hidden="true" tabindex="-1"></a>To use an API to extract data, you will need to follow these steps:</span>
+<span id="cb32-77"><a href="#cb32-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-78"><a href="#cb32-78" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Find an API that provides the data you are interested in. This may involve doing some research online to find available APIs.</span>
+<span id="cb32-79"><a href="#cb32-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-80"><a href="#cb32-80" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Familiarize yourself with the API's documentation to understand how to make requests and what data is available.</span>
+<span id="cb32-81"><a href="#cb32-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-82"><a href="#cb32-82" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Use a programming language to write a script that sends a request to the API and receives the data. Depending on the API, you may need to include authentication parameters in the request to specify the data you want to receive.</span>
+<span id="cb32-83"><a href="#cb32-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-84"><a href="#cb32-84" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Parse the data you receive from the API to extract the information you are interested in. The format of the data will depend on the API you are using, and may be in JSON, XML, or another format.</span>
+<span id="cb32-85"><a href="#cb32-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-86"><a href="#cb32-86" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Process the extracted data in your script, or save it to a file or database for later analysis.</span>
+<span id="cb32-87"><a href="#cb32-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-88"><a href="#cb32-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to fetch API data using a programming language</span></span>
+<span id="cb32-89"><a href="#cb32-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-90"><a href="#cb32-90" aria-hidden="true" tabindex="-1"></a><span class="fu">### with R {#sec-api-r}</span></span>
+<span id="cb32-91"><a href="#cb32-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-92"><a href="#cb32-92" aria-hidden="true" tabindex="-1"></a>There are several packages available in R for consuming APIs. Some of the most commonly used packages are:</span>
+<span id="cb32-93"><a href="#cb32-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-94"><a href="#cb32-94" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**httr**: This package provides convenient functions for making HTTP requests and processing the responses.</span>
+<span id="cb32-95"><a href="#cb32-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-96"><a href="#cb32-96" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**jsonlite**: This package is used for parsing JSON data, which is a common format for API responses.</span>
+<span id="cb32-97"><a href="#cb32-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-98"><a href="#cb32-98" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**RCurl**: This package is a wrapper around the libcurl library, which is a powerful and versatile HTTP client library.</span>
+<span id="cb32-99"><a href="#cb32-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-100"><a href="#cb32-100" aria-hidden="true" tabindex="-1"></a>To get data from an API in R, you need to follow these steps:</span>
+<span id="cb32-101"><a href="#cb32-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-102"><a href="#cb32-102" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Install the required packages by running the following command in the R console:</span>
+<span id="cb32-103"><a href="#cb32-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-106"><a href="#cb32-106" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-107"><a href="#cb32-107" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "installation of packages"</span></span>
+<span id="cb32-108"><a href="#cb32-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-109"><a href="#cb32-109" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"httr"</span>, <span class="st">"jsonlite"</span>, <span class="st">"RCurl"</span>)) </span>
+<span id="cb32-110"><a href="#cb32-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-111"><a href="#cb32-111" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-112"><a href="#cb32-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-113"><a href="#cb32-113" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Load the packages by running the following command:</span>
+<span id="cb32-114"><a href="#cb32-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-117"><a href="#cb32-117" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-118"><a href="#cb32-118" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Loading of packages"</span></span>
+<span id="cb32-119"><a href="#cb32-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-120"><a href="#cb32-120" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr) </span>
+<span id="cb32-121"><a href="#cb32-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-122"><a href="#cb32-122" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite) </span>
+<span id="cb32-123"><a href="#cb32-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-124"><a href="#cb32-124" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RCurl) </span>
+<span id="cb32-125"><a href="#cb32-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-126"><a href="#cb32-126" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-127"><a href="#cb32-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-128"><a href="#cb32-128" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Make an API request by using the GET function from the httr package. The API endpoint should be passed as an argument to this function.</span>
+<span id="cb32-129"><a href="#cb32-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-132"><a href="#cb32-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-133"><a href="#cb32-133" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="st">"https://api.example.com/endpoint"</span>) </span>
+<span id="cb32-134"><a href="#cb32-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-135"><a href="#cb32-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-136"><a href="#cb32-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-137"><a href="#cb32-137" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Check the status code of the response to see if the request was successful. A status code of <span class="in">`200`</span> indicates a successful request.</span>
+<span id="cb32-138"><a href="#cb32-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-141"><a href="#cb32-141" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-142"><a href="#cb32-142" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Request status"</span></span>
+<span id="cb32-143"><a href="#cb32-143" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<span id="cb32-144"><a href="#cb32-144" aria-hidden="true" tabindex="-1"></a>status_code <span class="ot">&lt;-</span> <span class="fu">status_code</span>(response) </span>
+<span id="cb32-145"><a href="#cb32-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-146"><a href="#cb32-146" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-147"><a href="#cb32-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-148"><a href="#cb32-148" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Extract the data from the response. If the API returns data in JSON format, you can use the <span class="in">`fromJSON`</span> function from the <span class="in">`jsonlite`</span> package to parse the data. Store the data in a variable for later use.</span>
+<span id="cb32-149"><a href="#cb32-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-152"><a href="#cb32-152" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-153"><a href="#cb32-153" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "Resulting dataframe"</span></span>
+<span id="cb32-154"><a href="#cb32-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-155"><a href="#cb32-155" aria-hidden="true" tabindex="-1"></a>api_data <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="fu">content</span>(response, <span class="at">as =</span> <span class="st">"text"</span>)) </span>
+<span id="cb32-156"><a href="#cb32-156" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-157"><a href="#cb32-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-158"><a href="#cb32-158" aria-hidden="true" tabindex="-1"></a>These are the basic steps to get data from an API in R. Depending on the API, you may need to pass additional parameters or authentication information in your request. For example,</span>
+<span id="cb32-159"><a href="#cb32-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-162"><a href="#cb32-162" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-163"><a href="#cb32-163" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: "API with access key"</span></span>
+<span id="cb32-164"><a href="#cb32-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-165"><a href="#cb32-165" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="st">"https://api.example.com/endpoint"</span>,</span>
+<span id="cb32-166"><a href="#cb32-166" aria-hidden="true" tabindex="-1"></a>            <span class="fu">authenticate</span>(</span>
+<span id="cb32-167"><a href="#cb32-167" aria-hidden="true" tabindex="-1"></a>                          <span class="at">user =</span> <span class="st">"API_KEY_HERE"</span>,</span>
+<span id="cb32-168"><a href="#cb32-168" aria-hidden="true" tabindex="-1"></a>                          <span class="at">password =</span> <span class="st">"API_PASSWORD_HERE"</span>,</span>
+<span id="cb32-169"><a href="#cb32-169" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type =</span> <span class="st">"basic"</span>)) </span>
+<span id="cb32-170"><a href="#cb32-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-171"><a href="#cb32-171" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-172"><a href="#cb32-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-173"><a href="#cb32-173" aria-hidden="true" tabindex="-1"></a><span class="fu">### with Python {#sec-api-py}</span></span>
+<span id="cb32-174"><a href="#cb32-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-175"><a href="#cb32-175" aria-hidden="true" tabindex="-1"></a>To use an API in Python, you can use a library such as <span class="in">`requests`</span> or <span class="in">`urllib`</span> to send HTTP requests to the API and receive responses. Here's an example of how to use an API in Python using the requests library:</span>
+<span id="cb32-176"><a href="#cb32-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-179"><a href="#cb32-179" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb32-180"><a href="#cb32-180" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb32-181"><a href="#cb32-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-182"><a href="#cb32-182" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the API endpoint URL and parameters</span></span>
+<span id="cb32-183"><a href="#cb32-183" aria-hidden="true" tabindex="-1"></a>endpoint <span class="op">=</span> <span class="st">'https://api.example.com/data'</span></span>
+<span id="cb32-184"><a href="#cb32-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-185"><a href="#cb32-185" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {<span class="st">'param1'</span>: <span class="st">'value1'</span>, <span class="st">'param2'</span>: <span class="st">'value2'</span>}</span>
+<span id="cb32-186"><a href="#cb32-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-187"><a href="#cb32-187" aria-hidden="true" tabindex="-1"></a><span class="co"># Send a GET request to the API endpoint</span></span>
+<span id="cb32-188"><a href="#cb32-188" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(endpoint, params <span class="op">=</span> params)</span>
+<span id="cb32-189"><a href="#cb32-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-190"><a href="#cb32-190" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the request was successful</span></span>
+<span id="cb32-191"><a href="#cb32-191" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb32-192"><a href="#cb32-192" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parse the response JSON data</span></span>
+<span id="cb32-193"><a href="#cb32-193" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> response.json()</span>
+<span id="cb32-194"><a href="#cb32-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-195"><a href="#cb32-195" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Process the data, for example by printing it to the console</span></span>
+<span id="cb32-196"><a href="#cb32-196" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(data)</span>
+<span id="cb32-197"><a href="#cb32-197" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb32-198"><a href="#cb32-198" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Error: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb32-199"><a href="#cb32-199" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-200"><a href="#cb32-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-201"><a href="#cb32-201" aria-hidden="true" tabindex="-1"></a>In this example, we're using the <span class="in">`requests`</span> library to send a GET request to an API endpoint at <span class="in">`https://api.example.com/data`</span>, passing two parameters (<span class="in">`param1`</span> and <span class="in">`param2`</span>) in the request. The <span class="in">`requests.get()`</span> method returns a <span class="in">`Response`</span> object, which we can use to check the response status code and parse the response data.</span>
+<span id="cb32-202"><a href="#cb32-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-203"><a href="#cb32-203" aria-hidden="true" tabindex="-1"></a>If the status code is <span class="in">`200`</span>, we can assume the request was successful, and we can parse the response data using the <span class="in">`response.json()`</span> method, which converts the JSON-formatted response to a Python object. We can then process the data as needed, for example by printing it to the console.</span>
+<span id="cb32-204"><a href="#cb32-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-205"><a href="#cb32-205" aria-hidden="true" tabindex="-1"></a>Of course, the exact API endpoint and parameters will depend on the specific API that you are using, and you'll need to consult the API documentation to learn how to construct your request correctly. But this example should give you a sense of the general process involved in using an API in Python.</span>
+<span id="cb32-206"><a href="#cb32-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-207"><a href="#cb32-207" aria-hidden="true" tabindex="-1"></a><span class="fu">## Practical example in R and Python</span></span>
+<span id="cb32-208"><a href="#cb32-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-209"><a href="#cb32-209" aria-hidden="true" tabindex="-1"></a>We will use R and Python to fetch the API data without and with the key.</span>
+<span id="cb32-210"><a href="#cb32-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-211"><a href="#cb32-211" aria-hidden="true" tabindex="-1"></a><span class="fu">### Without the key</span></span>
+<span id="cb32-212"><a href="#cb32-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-213"><a href="#cb32-213" aria-hidden="true" tabindex="-1"></a>In this example, we will use an API from a site called <span class="co">[</span><span class="al">![](images/give_food.png)</span><span class="ot">{height="30"}</span><span class="co">](https://www.givefood.org.uk/api/2/docs/)</span> that uses an API without an API key. In this case, we will be using a <span class="in">`GET`</span> request to fetch the API data at the **food banks** using this link: <span class="ot">&lt;https://www.givefood.org.uk/api/2/foodbanks&gt;</span>. Please follow the steps in @sec-api-r for R and @sec-api-py for Python.</span>
+<span id="cb32-214"><a href="#cb32-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-215"><a href="#cb32-215" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
+<span id="cb32-216"><a href="#cb32-216" aria-hidden="true" tabindex="-1"></a><span class="fu">## R</span></span>
+<span id="cb32-217"><a href="#cb32-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-220"><a href="#cb32-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-221"><a href="#cb32-221" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb32-222"><a href="#cb32-222" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<span id="cb32-223"><a href="#cb32-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-224"><a href="#cb32-224" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb32-225"><a href="#cb32-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-226"><a href="#cb32-226" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb32-227"><a href="#cb32-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-228"><a href="#cb32-228" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb32-229"><a href="#cb32-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-230"><a href="#cb32-230" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="st">"https://www.givefood.org.uk/api/2/foodbanks"</span>)</span>
+<span id="cb32-231"><a href="#cb32-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-232"><a href="#cb32-232" aria-hidden="true" tabindex="-1"></a><span class="fu">status_code</span>(response)</span>
+<span id="cb32-233"><a href="#cb32-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-234"><a href="#cb32-234" aria-hidden="true" tabindex="-1"></a>food_dataframe <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="fu">content</span>(response, <span class="at">as =</span> <span class="st">"text"</span>), <span class="at">flatten =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb32-235"><a href="#cb32-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-236"><a href="#cb32-236" aria-hidden="true" tabindex="-1"></a>food_dataframe <span class="sc">%&gt;%</span> </span>
+<span id="cb32-237"><a href="#cb32-237" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dim</span>()</span>
+<span id="cb32-238"><a href="#cb32-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-239"><a href="#cb32-239" aria-hidden="true" tabindex="-1"></a>food_dataframe <span class="sc">%&gt;%</span> </span>
+<span id="cb32-240"><a href="#cb32-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span>
+<span id="cb32-241"><a href="#cb32-241" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-242"><a href="#cb32-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-243"><a href="#cb32-243" aria-hidden="true" tabindex="-1"></a><span class="fu">## Python</span></span>
+<span id="cb32-244"><a href="#cb32-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-247"><a href="#cb32-247" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb32-248"><a href="#cb32-248" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb32-249"><a href="#cb32-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-250"><a href="#cb32-250" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb32-251"><a href="#cb32-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-252"><a href="#cb32-252" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb32-253"><a href="#cb32-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-254"><a href="#cb32-254" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(<span class="st">"https://www.givefood.org.uk/api/2/foodbanks"</span>)</span>
+<span id="cb32-255"><a href="#cb32-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-256"><a href="#cb32-256" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the request was successful</span></span>
+<span id="cb32-257"><a href="#cb32-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-258"><a href="#cb32-258" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(response.status_code)</span>
+<span id="cb32-259"><a href="#cb32-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-260"><a href="#cb32-260" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse the response JSON data</span></span>
+<span id="cb32-261"><a href="#cb32-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-262"><a href="#cb32-262" aria-hidden="true" tabindex="-1"></a>food_json <span class="op">=</span> response.json()</span>
+<span id="cb32-263"><a href="#cb32-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-264"><a href="#cb32-264" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to a pandas dataframe</span></span>
+<span id="cb32-265"><a href="#cb32-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-266"><a href="#cb32-266" aria-hidden="true" tabindex="-1"></a>food_dataframe <span class="op">=</span> pd.json_normalize(food_json)</span>
+<span id="cb32-267"><a href="#cb32-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-268"><a href="#cb32-268" aria-hidden="true" tabindex="-1"></a>food_dataframe.shape</span>
+<span id="cb32-269"><a href="#cb32-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-270"><a href="#cb32-270" aria-hidden="true" tabindex="-1"></a>food_dataframe.head()</span>
+<span id="cb32-271"><a href="#cb32-271" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-272"><a href="#cb32-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-273"><a href="#cb32-273" aria-hidden="true" tabindex="-1"></a>In this example, we use the <span class="in">`pd.json_normalize()`</span> method to flatten the list of dictionaries and create a dataframe from it. The resulting dataframe has columns for each key in the JSON objects.</span>
+<span id="cb32-274"><a href="#cb32-274" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb32-275"><a href="#cb32-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-276"><a href="#cb32-276" aria-hidden="true" tabindex="-1"></a><span class="fu">### With the key</span></span>
+<span id="cb32-277"><a href="#cb32-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-278"><a href="#cb32-278" aria-hidden="true" tabindex="-1"></a>In this example, we will use an API from <span class="co">[</span><span class="al">![](images/image-874061681.png)</span><span class="ot">{width="156" height="30"}</span><span class="co">](https://www.reed.co.uk/developers/Jobseeker)</span> that uses an API key. In this case, we will use a <span class="in">`GET`</span> request to fetch data for analyst jobs based in London from the <span class="co">[</span><span class="ot">Jobseeker</span><span class="co">](https://www.reed.co.uk/api/1.0/search?keywords=analyst&amp;location=london&amp;distancefromlocation=15)</span> API. Please follow the steps in @sec-api-r for R and @sec-api-py for Python, and sign up for the API key at the Jobseeker <span class="co">[</span><span class="ot">website</span><span class="co">](https://www.reed.co.uk/developers/Jobseeker)</span>.</span>
+<span id="cb32-279"><a href="#cb32-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-280"><a href="#cb32-280" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
+<span id="cb32-281"><a href="#cb32-281" aria-hidden="true" tabindex="-1"></a><span class="fu">## R</span></span>
+<span id="cb32-282"><a href="#cb32-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-285"><a href="#cb32-285" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-286"><a href="#cb32-286" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb32-287"><a href="#cb32-287" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb32-288"><a href="#cb32-288" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<span id="cb32-289"><a href="#cb32-289" aria-hidden="true" tabindex="-1"></a>dotenv<span class="sc">::</span><span class="fu">load_dot_env</span>()</span>
+<span id="cb32-290"><a href="#cb32-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-291"><a href="#cb32-291" aria-hidden="true" tabindex="-1"></a><span class="co"># In the .env file, make sure you add a blank line by pressing a return key to avoid incomplete final line found on '.env' warning </span></span>
+<span id="cb32-292"><a href="#cb32-292" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-293"><a href="#cb32-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-296"><a href="#cb32-296" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-297"><a href="#cb32-297" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb32-298"><a href="#cb32-298" aria-hidden="true" tabindex="-1"></a><span class="co">#| </span></span>
+<span id="cb32-299"><a href="#cb32-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-300"><a href="#cb32-300" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb32-301"><a href="#cb32-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-302"><a href="#cb32-302" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb32-303"><a href="#cb32-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-304"><a href="#cb32-304" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb32-305"><a href="#cb32-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-306"><a href="#cb32-306" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a GET response to call the API</span></span>
+<span id="cb32-307"><a href="#cb32-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-308"><a href="#cb32-308" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">GET</span>(<span class="st">"https://www.reed.co.uk/api/1.0/search?keywords=analyst&amp;location=london&amp;distancefromlocation=15"</span>,</span>
+<span id="cb32-309"><a href="#cb32-309" aria-hidden="true" tabindex="-1"></a><span class="fu">authenticate</span>(<span class="at">user =</span> <span class="fu">Sys.getenv</span>(<span class="st">"putyourapikeyhere"</span>),</span>
+<span id="cb32-310"><a href="#cb32-310" aria-hidden="true" tabindex="-1"></a><span class="at">password =</span> <span class="st">""</span>)) </span>
+<span id="cb32-311"><a href="#cb32-311" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-312"><a href="#cb32-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-313"><a href="#cb32-313" aria-hidden="true" tabindex="-1"></a>Replace <span class="in">`Sys.getenv("putyourapikeyhere")`</span> with your own API key.</span>
+<span id="cb32-314"><a href="#cb32-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-317"><a href="#cb32-317" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-318"><a href="#cb32-318" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb32-319"><a href="#cb32-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-320"><a href="#cb32-320" aria-hidden="true" tabindex="-1"></a><span class="fu">status_code</span>(response)</span>
+<span id="cb32-321"><a href="#cb32-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-322"><a href="#cb32-322" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the JSON string to a dataframe and view data in a table</span></span>
+<span id="cb32-323"><a href="#cb32-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-324"><a href="#cb32-324" aria-hidden="true" tabindex="-1"></a>job_dataframe <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="fu">content</span>(response, <span class="at">as =</span> <span class="st">"text"</span>), <span class="at">flatten =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb32-325"><a href="#cb32-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-326"><a href="#cb32-326" aria-hidden="true" tabindex="-1"></a><span class="co"># The job dataframe is inside the results</span></span>
+<span id="cb32-327"><a href="#cb32-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-328"><a href="#cb32-328" aria-hidden="true" tabindex="-1"></a>job_dataframe<span class="sc">$</span>results <span class="sc">%&gt;%</span> </span>
+<span id="cb32-329"><a href="#cb32-329" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dim</span>()</span>
+<span id="cb32-330"><a href="#cb32-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-331"><a href="#cb32-331" aria-hidden="true" tabindex="-1"></a>job_dataframe<span class="sc">$</span>results <span class="sc">%&gt;%</span> </span>
+<span id="cb32-332"><a href="#cb32-332" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span>
+<span id="cb32-333"><a href="#cb32-333" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-334"><a href="#cb32-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-335"><a href="#cb32-335" aria-hidden="true" tabindex="-1"></a><span class="fu">## Python</span></span>
+<span id="cb32-336"><a href="#cb32-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-339"><a href="#cb32-339" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb32-340"><a href="#cb32-340" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb32-341"><a href="#cb32-341" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb32-342"><a href="#cb32-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-343"><a href="#cb32-343" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb32-344"><a href="#cb32-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-345"><a href="#cb32-345" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb32-346"><a href="#cb32-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-347"><a href="#cb32-347" aria-hidden="true" tabindex="-1"></a><span class="co"># Set API endpoint and API key</span></span>
+<span id="cb32-348"><a href="#cb32-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-349"><a href="#cb32-349" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://www.reed.co.uk/api/1.0/search?keywords=analyst&amp;location=london&amp;distancefromlocation=15"</span></span>
+<span id="cb32-350"><a href="#cb32-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-351"><a href="#cb32-351" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> <span class="st">"f858a25b-1f71-4c1c-afea-ad088eb241e0"</span> <span class="co"># Replace with your own API key</span></span>
+<span id="cb32-352"><a href="#cb32-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-353"><a href="#cb32-353" aria-hidden="true" tabindex="-1"></a><span class="co"># Send a GET request to the API endpoint</span></span>
+<span id="cb32-354"><a href="#cb32-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-355"><a href="#cb32-355" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(url, auth <span class="op">=</span> (api_key, <span class="st">''</span>))</span>
+<span id="cb32-356"><a href="#cb32-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-357"><a href="#cb32-357" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the request was successful</span></span>
+<span id="cb32-358"><a href="#cb32-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-359"><a href="#cb32-359" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(response.status_code)</span>
+<span id="cb32-360"><a href="#cb32-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-361"><a href="#cb32-361" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse the response JSON data</span></span>
+<span id="cb32-362"><a href="#cb32-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-363"><a href="#cb32-363" aria-hidden="true" tabindex="-1"></a>job_json <span class="op">=</span> response.json()</span>
+<span id="cb32-364"><a href="#cb32-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-365"><a href="#cb32-365" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to a pandas dataframe</span></span>
+<span id="cb32-366"><a href="#cb32-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-367"><a href="#cb32-367" aria-hidden="true" tabindex="-1"></a><span class="co"># The dataframe is inside the results</span></span>
+<span id="cb32-368"><a href="#cb32-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-369"><a href="#cb32-369" aria-hidden="true" tabindex="-1"></a>job_dataframe <span class="op">=</span> pd.json_normalize(job_json[<span class="st">"results"</span>])</span>
+<span id="cb32-370"><a href="#cb32-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-371"><a href="#cb32-371" aria-hidden="true" tabindex="-1"></a>job_dataframe.shape</span>
+<span id="cb32-372"><a href="#cb32-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-373"><a href="#cb32-373" aria-hidden="true" tabindex="-1"></a>job_dataframe.head()</span>
+<span id="cb32-374"><a href="#cb32-374" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-375"><a href="#cb32-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-378"><a href="#cb32-378" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb32-379"><a href="#cb32-379" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb32-380"><a href="#cb32-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-381"><a href="#cb32-381" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb32-382"><a href="#cb32-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-383"><a href="#cb32-383" aria-hidden="true" tabindex="-1"></a><span class="co"># Set API endpoint and API key</span></span>
+<span id="cb32-384"><a href="#cb32-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-385"><a href="#cb32-385" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://www.reed.co.uk/api/1.0/search?keywords=analyst&amp;location=london&amp;distancefromlocation=15"</span></span>
+<span id="cb32-386"><a href="#cb32-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-387"><a href="#cb32-387" aria-hidden="true" tabindex="-1"></a>api_key <span class="op">=</span> <span class="st">"replace with your own API key"</span> </span>
+<span id="cb32-388"><a href="#cb32-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-389"><a href="#cb32-389" aria-hidden="true" tabindex="-1"></a><span class="co"># Send a GET request to the API endpoint</span></span>
+<span id="cb32-390"><a href="#cb32-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-391"><a href="#cb32-391" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(url, auth<span class="op">=</span>(api_key, <span class="st">''</span>))</span>
+<span id="cb32-392"><a href="#cb32-392" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-393"><a href="#cb32-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-396"><a href="#cb32-396" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb32-397"><a href="#cb32-397" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: true</span></span>
+<span id="cb32-398"><a href="#cb32-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-399"><a href="#cb32-399" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if the request was successful</span></span>
+<span id="cb32-400"><a href="#cb32-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-401"><a href="#cb32-401" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(response.status_code)</span>
+<span id="cb32-402"><a href="#cb32-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-403"><a href="#cb32-403" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse the response JSON data</span></span>
+<span id="cb32-404"><a href="#cb32-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-405"><a href="#cb32-405" aria-hidden="true" tabindex="-1"></a>job_json <span class="op">=</span> response.json()</span>
+<span id="cb32-406"><a href="#cb32-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-407"><a href="#cb32-407" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to a pandas dataframe</span></span>
+<span id="cb32-408"><a href="#cb32-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-409"><a href="#cb32-409" aria-hidden="true" tabindex="-1"></a><span class="co"># The dataframe is inside the results</span></span>
+<span id="cb32-410"><a href="#cb32-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-411"><a href="#cb32-411" aria-hidden="true" tabindex="-1"></a>job_dataframe <span class="op">=</span> pd.json_normalize(job_json[<span class="st">"results"</span>])</span>
+<span id="cb32-412"><a href="#cb32-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-413"><a href="#cb32-413" aria-hidden="true" tabindex="-1"></a>job_dataframe.shape</span>
+<span id="cb32-414"><a href="#cb32-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-415"><a href="#cb32-415" aria-hidden="true" tabindex="-1"></a>job_dataframe.head()</span>
+<span id="cb32-416"><a href="#cb32-416" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb32-417"><a href="#cb32-417" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb32-418"><a href="#cb32-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-419"><a href="#cb32-419" aria-hidden="true" tabindex="-1"></a>You can now use the data for your data science.</span>
+<span id="cb32-420"><a href="#cb32-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-421"><a href="#cb32-421" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb32-422"><a href="#cb32-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-423"><a href="#cb32-423" aria-hidden="true" tabindex="-1"></a>I hope you enjoy this article. You can find its GitHub repository <span class="co">[</span><span class="ot">here</span><span class="co">](https://github.com/gbganalyst/API-in-R-and-Python)</span>, and if you like this write-up, you can also follow me on <span class="co">[</span><span class="ot">Twitter</span><span class="co">](https://twitter.com/gbganalyst)</span> and <span class="co">[</span><span class="ot">Linkedin</span><span class="co">](https://linkedin.com/in/ezekiel-ogundepo)</span> for more updates on <span class="in">`R`</span>, <span class="in">`Python`</span>, and <span class="in">`Excel`</span> for data science.</span>
+<span id="cb32-424"><a href="#cb32-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-425"><a href="#cb32-425" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb32-426"><a href="#cb32-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-427"><a href="#cb32-427" aria-hidden="true" tabindex="-1"></a>This article is fully sponsored by <span class="co">[</span><span class="ot">Olubukunola Oyedele</span><span class="co">](https://www.linkedin.com/in/olubukunola-oyedele/)</span>, Director of Systems, Epidemiology, and Education, 54gene.</span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+<script src="Introduction-to-API_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
