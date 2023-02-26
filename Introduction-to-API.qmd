@@ -358,10 +358,14 @@ import pandas as pd
 url = "https://www.reed.co.uk/api/1.0/search?keywords=analyst&location=london&distancefromlocation=15"
 
 api_key = "replace with your own API key" 
+```
 
+Based on the instructions in the API documentation, you will need to include your API key for all requests in a basic authentication http header as the username, leaving the password empty.
+
+```{python}
 # Send a GET request to the API endpoint
 
-response = requests.get(url, auth=(api_key, ''))
+response = requests.get(url, auth = (api_key, ''))
 ```
 
 ```{python}

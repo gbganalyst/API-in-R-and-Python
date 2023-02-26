@@ -1,4 +1,4 @@
 - source: Introduction-to-API.qmd
   quarto-pub:
     - id: 80d35251-077f-4fe4-94b0-5bed86669f3b
-      url: 'https://quartopub.com/sites/gbganalyst/introduction-to-api-in-r-and-python'
+      url: 'https://quartopub.com/sites/gbganalyst/api-in-r-and-python'
