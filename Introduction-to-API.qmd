@@ -9,6 +9,7 @@ author:
     affiliation: 54gene
     affiliation-url: https://54gene.com
 toc: true
+toc-title: "On this page"
 toc-location: left
 number-sections: true
 highlight-style: pygments
@@ -391,7 +392,15 @@ job_dataframe.head()
 ```
 :::
 
+
 You can now use the data for your data science.
+
+
+## Other resources
+
+You can also watch `Dean Chereden` YouTube video on how to GET data from an API using R in RStudio.
+
+{{< video https://www.youtube.com/watch?v=AhZ42vSmDmE&list=PLfXinLezajxuWY8QyhQ7joAC8bL_dz1pd&index=7 aspect-ratio="16x9" >}}
 
 ------------------------------------------------------------------------
 
@@ -399,4 +408,4 @@ I hope you enjoy this article. You can find its GitHub repository [here](https:/
 
 ------------------------------------------------------------------------
 
-This article is fully sponsored by [Olubukunola Oyedele](https://www.linkedin.com/in/olubukunola-oyedele/), Director of Systems, Epidemiology, and Education, 54gene.
+This article is fully supported by [Olubukunola Oyedele](https://www.linkedin.com/in/olubukunola-oyedele/), Director of Systems, Epidemiology, and Education, 54gene.
