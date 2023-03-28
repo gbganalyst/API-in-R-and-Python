@@ -41,6 +41,11 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+:::{.callout-note}
+This article is part of my contribution to open-source and for the love of the data community. I hope it will be useful to you and your work.
+:::
+
 ## What is an API?
 
 ![Image source: Unsplash](images/API.jpg){style="float:right;" fig-alt="API image" width="200"}
@@ -289,7 +294,12 @@ authenticate(user = Sys.getenv("putyourapikeyhere"),
 password = "")) 
 ```
 
+
+:::{.callout-tip}
 Replace `Sys.getenv("putyourapikeyhere")` with your own API key.
+:::
+
+
 
 ```{r}
 #| eval: true
@@ -392,9 +402,7 @@ job_dataframe.head()
 ```
 :::
 
-
 You can now use the data for your data science.
-
 
 ## Other resources
 
@@ -404,8 +412,5 @@ You can also watch `Dean Chereden` YouTube video on how to GET data from an API 
 
 ------------------------------------------------------------------------
 
-I hope you enjoy this article. You can find its GitHub repository [here](https://github.com/gbganalyst/API-in-R-and-Python), and if you like this write-up, you can also follow me on [Twitter](https://twitter.com/gbganalyst) and [Linkedin](https://linkedin.com/in/ezekiel-ogundepo) for more updates on `R`, `Python`, and `Excel` for data science.
+I hope you found this article informative. You can find its GitHub repository [here](https://github.com/gbganalyst/API-in-R-and-Python). If you enjoyed reading this write-up, please follow me on [Twitter](https://twitter.com/gbganalyst) and [Linkedin](https://linkedin.com/in/ezekiel-ogundepo) for more updates on `R`, `Python`, and `Excel` for data science.
 
-------------------------------------------------------------------------
-
-This article is fully supported by [Olubukunola Oyedele](https://www.linkedin.com/in/olubukunola-oyedele/), Director of Systems, Epidemiology, and Education, 54gene.
